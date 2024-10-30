@@ -66,13 +66,53 @@ public class Grid extends JPanel implements ActionListener {
     //ALL YOUR CODE GOES HERE
     public void nextGeneration() {
         //1 Create a new temporary new array to store the values of the next generation
-
+        int[][] newarray = new int[rows][cols];
         //2 Visit every cell in the new temporary grid. Check the number of neighboring cells, and based on the rules determine whether the cell will be alive or dead.
         //Watch out for edge cases!
+        
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int numalive = 0;
+                if (row>0 && col>0){
+                    numalive = grid[row-1][col-1];
+                }
+                if (row>0){
+                    numalive += grid[row-1][col];
+                }
+                if (col>0){
+                    numalive += grid[row][col-1];
+                }
+                if (row+1<= this.rows-1){
+                    numalive += grid[row+1][col];
+                }
+                if (col+1<= this.cols-1){
+                    numalive += grid[row][col+1];
+                }
+                if (row+1<= this.rows-1 && col+1 <= this.cols-1){
+                    numalive += grid[row+1][col+1];
+                }
+                if (col+1<= this.cols-1 && row > 0){
+                    numalive += grid[row-1][col+1];
+                }
+                if (row+1<= this.rows-1 && col > 0){
+                    numalive += grid[row+1][col-1];
+                }
+                if(grid[row][col] == 1 ) {//alive
+                    if(numalive == 2 || numalive == 3){
+                        newarray[row][col] = 1;
+                    } else {
+                        newarray[row][col] = 0;
+                    }
+                } else {//dead
+                    if (numalive == 3){
+                        newarray[row][col] = 1;
+                    }
+                }
 
+            }
+        }
         //3 Copy the values of your temporary grid to the real grid
-
-
+        grid = newarray;
         //don't mess with this part
         repaint();
     }
